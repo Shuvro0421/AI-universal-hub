@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- daisy UI -->
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@3.6.2/dist/full.css" rel="stylesheet" type="text/css" />
+    <script src="https://kit.fontawesome.com/507ed1c05c.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <title>AI Universe HUB</title>
+</head>
+
+
+<body class="text-black">
+    <header>
+        <h1 class="text-5xl mt-7 font-semibold text-center">AI Universe Hub</h1>
+        <div class="text-center mt-5 hidden">
+            <button onclick="sortByDate()" class="btn hover:bg-red-600 text-white bg-[#EB5757]  normal-case px-7">Sort
+                By Date</button>
+        </div>
+
+    </header>
+
+    <main>
+        <!-- modal -->
+        <!-- You can open the modal using ID.showModal() method -->
+
+        <dialog id="my_modal_4" class="modal">
+            <form method="dialog" class="modal-box w-11/12 max-w-5xl">
+                <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+                <!-- main modal card -->
+                <div id="main-modal-card" class="flex md:flex-row flex-col gap-4 p-5">
+
+                </div>
+
+            </form>
+        </dialog>
+        <!-- card section -->
+        <div class="mt-8 grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 m-5 gap-7" id="all-cards">
+            <!-- cards -->
+
+        </div>
+        <!-- see more -->
+        <div class="text-center my-8 hidden" id="show-all-button">
+            <button onclick="showAllButton()" class="btn hover:bg-red-600 text-white bg-[#EB5757]  normal-case px-7">See
+                More</button>
+        </div>
+    </main>
+
+    <script src="./js/index.js"></script>
+</body>
+
+</html>
