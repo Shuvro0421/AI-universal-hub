@@ -1,11 +1,20 @@
+let currentSortState = false; // Global variable to track sorting state
+
 const loadData = async (isShowAll) => {
     const response = await fetch(`https://openapi.programming-hero.com/api/ai/tools`);
     const data = await response.json();
     const allData = data.data.tools;
 
+    const sortState = currentSortState; // Store the current sorting state
+    if (sortState) {
+        allData.sort((a, b) => {
+            const dateA = new Date(a.published_in);
+            const dateB = new Date(b.published_in);
+            return dateB - dateA; // Sort in descending order (newest first)
+        });
+    }
     allCards(allData, isShowAll);
-}
-
+};
 const allCards = (allDatas, isShowAll) => {
 
     const showAllButton = document.getElementById('show-all-button');
@@ -21,9 +30,6 @@ const allCards = (allDatas, isShowAll) => {
         showAllButton.classList.add('hidden');
     }
     allCards.innerHTML = '';
-
-
-
 
 
     allDatas.forEach(allData => {
@@ -51,20 +57,21 @@ const allCards = (allDatas, isShowAll) => {
             </div>
         `;
         allCards.appendChild(cardDiv);
+        
 
     });
 }
 
+
+const sortByDateButton = () => {
+    currentSortState = !currentSortState; // Toggle the sorting state
+    loadData(false);
+};
+
 // show all 
 const showAllButton = () => {
     loadData(true);
-}
-
-// sort by date
-const sortByDate = (allData) => {
-    
-
-}
+};
 
 // click modal by id
 const showDetails = async (id) => {
@@ -73,8 +80,6 @@ const showDetails = async (id) => {
     const modalId = data.data;
     console.log(modalId);
     loadDetails(modalId);
-
-
 }
 
 const loadDetails = (modalId) => {
