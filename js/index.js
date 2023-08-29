@@ -1,5 +1,5 @@
 let currentSortState = false; // Global variable to track sorting state
-
+// Global function
 const loadData = async (isShowAll) => {
     const response = await fetch(`https://openapi.programming-hero.com/api/ai/tools`);
     const data = await response.json();
@@ -33,7 +33,9 @@ const allCards = (allDatas, isShowAll) => {
 
 
     allDatas.forEach(allData => {
+
         const features = allData.features;
+
 
         const cardDiv = document.createElement('div');
         cardDiv.classList = `card bg-base-100 border-2 border-gray-200 p-5`;
@@ -57,7 +59,7 @@ const allCards = (allDatas, isShowAll) => {
             </div>
         `;
         allCards.appendChild(cardDiv);
-        
+
 
     });
 }
@@ -78,22 +80,31 @@ const showDetails = async (id) => {
     const response = await fetch(`https://openapi.programming-hero.com/api/ai/tool/${id}`);
     const data = await response.json();
     const modalId = data.data;
-    console.log(modalId);
     loadDetails(modalId);
 }
 
 const loadDetails = (modalId) => {
 
-    const integrations = modalId.integrations;
 
-    console.log(integrations);
+    const integrations = modalId.integrations;
+    const features = modalId.features;
+    const featureNames = [];
+
+    Object.values(features).forEach(feature => {
+        featureNames.push(feature.feature_name);
+    });
+
+    
+   
+    console.log(featureNames);
+
     const mainModalCard = document.getElementById('main-modal-card');
     const modalCardDiv = document.createElement('div');
     modalCardDiv.classList = `flex md:flex-row flex-col gap-4`;
     modalCardDiv.innerHTML = `
         <div class="card  bg-pink-100  border-2 border-red-300">
             <div class="p-5">
-                <h2 class="card-title font-bold">${modalId.description}</h2>
+                <h2 class="card-title font-bold md:text-left text-center">${modalId.description}</h2>
                 <div class="flex md:flex-row flex-col gap-5 mt-4">
                     <div class="bg-white rounded-md p-3 text-center font-bold">
                         <p class="text-[#03A30A]">Free of Cost/Basic</p>
@@ -105,13 +116,21 @@ const loadDetails = (modalId) => {
                         <p class="text-[#EB5757]">Free of Cost /Enterprise</p>
                     </div>
                 </div>
-                <div class="flex md:flex-row flex-col justify-between text-xl font-bold mt-5">
+                <div class="flex md:flex-row flex-col md:justify-between text-center md:text-left text-xl font-bold mt-5">
+                    <div class=" space-y-3">
                     <p class="">Features</p>
+                    <ul class="md:list-disc m-5 space-y-2">
+                        ${featureNames.map(featureName => `<li class="text-gray-500 font-normal text-base">${featureName}</li>`).join('')}
+                    </ul>
+                    </div>
                     <div class=" space-y-3">
                     <p class="">Integrations</p>
+                    <ul class="md:list-disc space-y-2 m-5">
                     ${integrations && integrations.length > 0
-            ? `${integrations.map(integration => `<li class="text-gray-500 font-normal text-base">${integration}</li>`).join('')}`
-            : `<p  class="text-gray-500 font-normal text-base">No data Found</p>`}
+                        ? `${integrations.map(integration => `<li class="text-gray-500 font-normal text-base">${integration}</li>`).join('')}`
+                        : `<p  class="text-gray-500 font-normal text-base">No data Found</p>`}
+                    </ul>
+
                     </div>
                 </div>
             </div>
@@ -124,10 +143,10 @@ const loadDetails = (modalId) => {
                 <img class="rounded-xl" src="${modalId && modalId.image_link && modalId.image_link[0] ? modalId.image_link[0] : 'no Logo'}" alt="image" />
                 <div class="absolute right-0 top-0 m-2">
                     ${modalId && modalId.accuracy && modalId.accuracy.score !== null && typeof modalId.accuracy.score !== 'undefined'
-                    ? `<p class=" bg-[#EB5757] text-white font-semibold text-center py-1 px-2 rounded-lg z-10">
+            ? `<p class=" bg-[#EB5757] text-white font-semibold text-center py-1 px-2 rounded-lg z-10">
                         ${modalId.accuracy.score * 100}% accuracy
                     </p>`
-                    : ''}
+            : ''}
                 </div>
 
             </div>
